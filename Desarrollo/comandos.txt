@@ -1,9 +1,15 @@
 #Crea un proyecto en django
 sudo docker-compose run web django-admin startproject rest .
 #Crear el pauqete de migraciones
-sudo docker-compose run web python manage.py makemigrations
+sudo docker-compose run web python manage.py makemigrations schedule
 #Hace las migraciones
 sudo docker-compose run web python manage.py migrate
+#Ejecuta el proyecto
+sudo docker-compose up
+#Crear app
+sudo docker-compose run web python manage.py startapp schedule
+#Crear super usuario 
+sudo docker-compose run web python manage.py createsuperuser
 
 #Eliminar contenedores
 sudo docker rm $(sudo docker ps -a -q)
@@ -11,4 +17,7 @@ sudo docker rm $(sudo docker ps -a -q)
 #Eliminar Imgenes
 
 sudo docker rmi $(sudo docker images -q)
+
+#Dar permisos al usuario
+sudo chown -R $USER:$USER .
 
