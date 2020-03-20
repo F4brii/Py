@@ -12,19 +12,6 @@ class Teacher(models.Model):
     def __str__(self):
         return self.user.username
 
-class Course(models.Model):
-    name = models.CharField('name of course', max_length = 30)
-    maxLength =  models.IntegerField()
-    minLength = models.IntegerField()
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
-
-    class Meta:
-        ordering = ["name"]
-        verbose_name_plural = "Courses"
-
-    def __str__(self):
-        return self.name
-
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
@@ -34,6 +21,22 @@ class Student(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class Course(models.Model):
+    name = models.CharField('name of course', max_length = 30)
+    maxLength =  models.IntegerField()
+    minLength = models.IntegerField()
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    students =  models.ManyToManyField(Student)
+
+    class Meta:
+        ordering = ["name"]
+        verbose_name_plural = "Courses"
+
+    def __str__(self):
+        return self.name
+
 
 
 
