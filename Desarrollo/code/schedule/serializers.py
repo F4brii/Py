@@ -2,14 +2,20 @@ from rest_framework import serializers
 from schedule.models import Teacher, Student, Course, TeacherCourse, StudentCourse
 from django.contrib.auth.models import User
 
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'first_name', 'last_name', 'email']
+        fields = ['id', 'username', 'first_name','last_name', 'email', 'password']
+
+    def create(self, validated_data):
+        user = super(UserSerializer, self).create(validated_data)
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
 
 
 class TeacherSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
     class Meta:
         model = Teacher
         fields = ['id', 'user', 'code_institutional']
@@ -22,25 +28,18 @@ class CourseSerializer(serializers.ModelSerializer):
 
 
 class TeacherCourseSerializer(serializers.ModelSerializer):
-    teacher = TeacherSerializer()
-    course = CourseSerializer()
-
     class Meta:
-        model = Course
-        fields = ['teacher', 'course' ]
+        model = TeacherCourse
+        fields = ['teacher', 'course']
 
 
 class StudentSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
     class Meta:
         model = Student
         fields = ['id', 'user', 'code_institutional']
 
 
 class StudentCourseSerializer(serializers.ModelSerializer):
-    student = StudentSerializer()
-    course = serializers.StringRelatedField(many=True)
-
     class Meta:
-        model = Course
-        fields = ['student', 'course' ]
+        model = StudentCourse
+        fields = ['student', 'course']

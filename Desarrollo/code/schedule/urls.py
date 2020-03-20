@@ -3,6 +3,8 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from schedule import views
 
 urlpatterns = [
+    path('users/', views.UserList.as_view()),
+    path('user/<int:pk>/', views.UserDetail.as_view()),
     path('teachers/', views.TeacherList.as_view()),
     path('teacher/<int:pk>/', views.TeacherDetail.as_view()),
     path('students/', views.StudentList.as_view()),
